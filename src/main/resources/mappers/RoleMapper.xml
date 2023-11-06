@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunhe.mapper.RoleMapper">
+    <!-- 定义名为 "role" 的 resultMap，用于映射角色信息 -->
+    <resultMap id="role1" type="com.yunhe.entity.Role">
+        <!-- 将数据库表的 "id" 列映射到 Role 对象的 "id" 属性 -->
+        <id property="id" column="id"/>
+        <!-- 定义一个集合属性 "permissions"，用于存储角色的权限信息 -->
+        <collection property="permissions" javaType="list" ofType="com.yunhe.entity.Permission" column="id" autoMapping="true" select="com.yunhe.mapper.PermissionMapper.findPermission"/>
+    </resultMap>
+    <!-- 根据用户的 id 查询用户的角色信息，使用 "role" resultMap 进行映射 -->
+    <select id="findRole" resultMap="role1">
+        select * from role where id in (select roleId from users_role where userId = #{id})
+    </select>
+
+
+    <!--根据用户id查询可添加角色-->
+    <resultMap id="findRole" type="com.yunhe.entity.Role" autoMapping="true">
+        <id property="id" column="id"/>
+    </resultMap>
+    <select id="findUserByIdAndAllRole" resultMap="findRole">
+        select * from role where id not in (select roleId from users_role where userId = #{id});
+    </select>
+
+    <!--根据角色id查询角色详情-->
+    <resultMap id="roleShow" type="com.yunhe.entity.Role" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="permissions" column="id" autoMapping="true" ofType="com.yunhe.entity.Permission" javaType="list" select="com.yunhe.mapper.PermissionMapper.findPermission">
+            <id property="id" column="id"/>
+        </collection>
+    </resultMap>
+    <select id="roleShow" resultMap="roleShow">
+        select * from role where id = #{id}
+    </select>
+
+
+    <!--根据角色id查询可以添加权限-->
+    <resultMap id="role" type="com.yunhe.entity.Role" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="permissions" column="id" autoMapping="true" ofType="com.yunhe.entity.Permission" select="com.yunhe.mapper.PermissionMapper.findPer">
+            <id property="id" column="id"/>
+        </collection>
+    </resultMap>
+    <select id="addRolePer" resultMap="role">
+        select * from role where id = #{id}
+    </select>
+</mapper>

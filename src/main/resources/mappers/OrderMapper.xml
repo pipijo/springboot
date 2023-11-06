@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunhe.mapper.OrderMapper">
+    <!--查询所有订单信息-->
+    <resultMap id="result" type="com.yunhe.entity.Orders" autoMapping="true">
+        <id property="id" column="id"/>
+        <result column="orderTime" property="orderTimeStr"/>
+        <association property="product" javaType="com.yunhe.entity.Product" autoMapping="true">
+            <id property="id" column="id"/>
+        </association>
+    </resultMap>
+    <select id="findAll" resultMap="result">
+        select * from orders o,product p where o.productId = p.id
+    </select>
+    <!--添加订单信息-->
+    <insert id="saveOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into orders values (null,#{orderNum},#{orderTime},#{peopleCount},#{orderDesc},#{payType},#{orderStatus},#{productId},#{memberId})
+    </insert>
+
+    <!--给查询订单做主键映射-->
+    <!--<resultMap id="orderMap1" type="com.yunhe.entity.Orders" autoMapping="true">
+        <id column="oid" property="id"/>
+        <association property="product" javaType="Product" autoMapping="true">
+            <id column="pid" property="id"/>
+        </association>
+        <association property="member" javaType="Member" autoMapping="true">
+            <id column="mid" property="id"/>
+        </association>
+        <collection property="travellers" ofType="Traveller" autoMapping="true">
+            <id column="tid" property="id"/>
+        </collection>
+    </resultMap>
+
+    <select id="findById" resultMap="orderMap1">
+        SELECT *,orders.id as oid,
+               product.id AS pid,
+               member.id AS mid,
+               traveller.id AS tid
+        FROM orders
+                 INNER JOIN order_traveller ON order_traveller.orderId = orders.id
+                 INNER JOIN product ON orders.productId = product.id
+                 INNER JOIN traveller ON order_traveller.travellerId = traveller.id
+                 INNER JOIN member ON orders.memberId = member.id
+        where orders.id=#{id}
+    </select>-->
+
+    <!--修改订单信息-->
+    <update id="editOrder">
+        update orders set orderNum = #{orderNum},orderTime = #{orderTime},peopleCount = #{peopleCount},orderDesc = #{orderDesc},payType = #{payType},
+                          orderStatus = #{orderStatus} where id = #{id}
+    </update>
+
+
+
+    <!--添加订单表和游客表的关联表-->
+    <insert id="addOT">
+        insert into order_traveller (orderId, travellerId) values (#{orderId},#{travellerId})
+    </insert>
+    <!--删除订单信息-->
+    <delete id="delById">
+        delete from orders where id = #{id}
+    </delete>
+    <!--删除中间表的关联关系-->
+    <delete id="delOT">
+        delete from order_traveller where orderId = #{id}
+    </delete>
+</mapper>

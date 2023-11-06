@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunhe.mapper.UserMapper">
+
+    <!--根据用户名查询用户做登录-->
+    <resultMap id="login" type="com.yunhe.entity.UserInfo" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="roles" javaType="list" ofType="com.yunhe.entity.Role" autoMapping="true">
+            <id property="id" column="rid"/>
+        </collection>
+    </resultMap>
+    <select id="findByUserName" resultMap="login">
+        select *,r.id rid from users u,role r,users_role ur where u.id = ur.userId and ur.roleId = r.id and u.username = #{username}
+    </select>
+
+    <!--添加用户-->
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+        insert into users values (null,#{email},#{username},#{password},#{phoneNum},#{status})
+    </insert>
+
+    <!-- 定义名为 "user" 的 resultMap，用于映射用户信息 -->
+    <resultMap id="user" type="com.yunhe.entity.UserInfo">
+        <!-- 将数据库表的 "id" 列映射到 UserInfo 对象的 "id" 属性 -->
+        <id property="id" column="id"/>
+        <!-- 定义一个集合属性 "roles"，用于存储用户的角色信息 -->
+        <collection property="roles" javaType="list" ofType="com.yunhe.entity.Role" column="id" autoMapping="true" select="com.yunhe.mapper.RoleMapper.findRole"/>
+    </resultMap>
+
+    <!-- 根据用户的 id 查询用户详细信息，使用 "user" resultMap 进行映射 -->
+    <select id="findById" resultMap="user">
+        select * from users where id = #{id}
+    </select>
+
+
+    <!--根据用户id删除用户-->
+    <delete id="deleteUser">
+        delete from users where id = #{id}
+    </delete>
+    <!--删除用户和角色的中间表-->
+    <delete id="delUserRole">
+        delete from users_role where userId = #{userId}
+    </delete>
+</mapper>

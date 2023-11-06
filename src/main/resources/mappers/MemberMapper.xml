@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunhe.mapper.MemberMapper">
+    <!--查询所有联系人姓名，给添加订单做回显-->
+    <select id="findAll" resultType="com.yunhe.entity.Member">
+        select * from member
+    </select>
+
+    <!--根据联系人id查询可添加会员-->
+    <resultMap id="findVip" type="com.yunhe.entity.Member" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="vip" column="id" autoMapping="true" javaType="list" ofType="com.yunhe.entity.Vip" select="com.yunhe.mapper.VipMapper.findById">
+        </collection>
+    </resultMap>
+    <select id="findMemberVip" resultMap="findVip">
+        select * from member where id = #{id}
+    </select>
+</mapper>
