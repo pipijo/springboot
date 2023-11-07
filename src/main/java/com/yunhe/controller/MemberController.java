@@ -58,4 +58,28 @@ public class MemberController {
         memberService.addVip(memberId,ids);
         return "redirect:findAll";
     }
+
+    /**
+     * 根据联系人id删除联系人
+     * @param id 联系人id
+     * @return 重定向到查询
+     */
+    @RequestMapping("deleteMember")
+    public String delMember(Integer id){
+        memberService.delMember(id);
+        return "redirect:findAll";
+    }
+
+    /**
+     * 删除多条联系人
+     * @param ids 联系人id
+     * @return
+     */
+    @RequestMapping("delAll")
+    public String delAll(Integer[] ids){
+        for (Integer id : ids) {
+            memberService.delMember(id);
+        }
+        return "redirect:findAll";
+    }
 }

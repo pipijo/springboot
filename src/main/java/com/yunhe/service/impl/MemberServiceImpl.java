@@ -64,4 +64,15 @@ public class MemberServiceImpl implements MemberService {
             memberMapper.addVip(memberId,id);
         }
     }
+
+    /**
+     * 删除联系人信息
+     *
+     * @param id 联系人id
+     */
+    @Override
+    public void delMember(Integer id) {
+        memberMapper.delMemberVip(id);
+        memberMapper.delMember(id);
+    }
 }

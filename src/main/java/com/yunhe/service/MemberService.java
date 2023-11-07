@@ -38,4 +38,10 @@ public interface MemberService {
      * @param ids 会员id
      */
     void addVip(Integer memberId,Integer[] ids);
+
+    /**
+     * 删除联系人信息
+     * @param id 联系人id
+     */
+    void delMember(Integer id);
 }

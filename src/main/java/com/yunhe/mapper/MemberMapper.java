@@ -1,6 +1,7 @@
 package com.yunhe.mapper;
 
 import com.yunhe.entity.Member;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -43,4 +44,19 @@ public interface MemberMapper {
      */
     @Insert("insert into member_vip values (#{id},#{i})")
     void addVip( Integer id,Integer i);
+
+
+    /**
+     * 删除联系人
+     * @param id 联系人id
+     */
+    @Delete("delete from member where id = #{id}")
+    void delMember(Integer id);
+
+    /**
+     * 删除联系人和vip的中间表关系
+     * @param id 联系人id
+     */
+    @Delete("delete from member_vip where memberId = #{id}")
+    void delMemberVip(Integer id);
 }
