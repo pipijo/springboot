@@ -26,6 +26,13 @@ public interface RoleService {
     void addRole(Role role);
 
     /**
+     * 添加角色權限
+     * @param ids 權限id
+     * @param rid 角色id
+     */
+    void addPermissionToRole(Integer[] ids,Integer rid);
+
+    /**
      * 查询角色详情
      * @param id 角色id
      * @return 角色信息

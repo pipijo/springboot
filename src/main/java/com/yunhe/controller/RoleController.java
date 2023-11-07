@@ -78,6 +78,19 @@ public class RoleController {
     }
 
     /**
+     * 添加角色權限
+     * @param ids 權限id
+     * @param roleId 角色id
+     * @return 重定向到查詢
+     */
+    @RequestMapping("addPermissionToRole")
+    public String addPermissionToRole(Integer[] ids,Integer roleId){
+        roleService.addPermissionToRole(ids,roleId);
+        return "redirect:findAll";
+    }
+
+
+    /**
      * 根据角色id删除角色信息
      * @param id 角色id
      * @return 重定向到查询

@@ -51,6 +51,15 @@ public interface RoleMapper {
     })*/
     Role addRolePer(Integer id);
 
+
+    /**
+     * 添加角色權限
+     * @param id 權限id
+     * @param rid 角色id
+     */
+    @Insert("insert into role_permission (permissionId, roleId) values (#{permissionId},#{roleId})")
+    void addPermissionToRole(@Param("permissionId") Integer id,@Param("roleId") Integer rid);
+
     /**
      * 根据用户id查询详情
      * @param id 用户id

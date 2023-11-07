@@ -45,6 +45,20 @@ public class RoleServiceImpl implements RoleService {
         roleMapper.addRole(role);
     }
 
+
+    /**
+     * 添加角色權限
+     * @param ids 權限id
+     * @param rid 角色id
+     */
+    @Override
+    public void addPermissionToRole(Integer[] ids,Integer rid) {
+        for (Integer id : ids) {
+            roleMapper.addPermissionToRole(id,rid);
+        }
+    }
+
+
     /**
      * 查询角色详情
      *
