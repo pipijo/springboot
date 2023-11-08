@@ -29,8 +29,6 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserService userService;
-    @Autowired
-    private RoleService roleService;
 
     /**
      * 查询所有用户
