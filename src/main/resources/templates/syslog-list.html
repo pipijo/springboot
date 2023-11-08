@@ -260,6 +260,14 @@
 <script src="/plugins/ionslider/ion.rangeSlider.min.js"></script>
 <script src="/plugins/bootstrap-slider/bootstrap-slider.js"></script>
 <script>
+
+    function changePageSize() {
+        //获取下拉框的值
+        var pageSize = $("#changePageSize").val();
+        var page=[[${pageInfo.pageNum}]];
+        //向服务器发送请求，改变没页显示条数
+        location.href = "/syslog/findAll?page="+page+"&size=" + pageSize;
+    }
     $(document).ready(function() {
         // 选择框
         $(".select2").select2();
